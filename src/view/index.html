@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="newBFC pull-right">
+            <p>Sibling 1</p></a>
+        </div>
+        <div class="newBFC">
+            <p>Sibling 2</p>
+        </div>
+    </div>
+</body>
+<script src="../tools/parseHtml.js"></script>
+<script>
+    var html = `<div class="container">
+        <div class="newBFC pull-right">
+            <p>Sibling 1</p></a>
+        </div>
+        <div class="newBFC">
+            <p>Sibling 2</p>
+        </div>
+    </div>`
+console.log(parser(html));
+</script>
+</html>
