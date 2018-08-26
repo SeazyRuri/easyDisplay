@@ -7,16 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
+    <!-- <div class="container" >
         <div class="newBFC pull-right">
             <p>Sibling 1</p></a>
         </div>
         <div class="newBFC">
             <p>Sibling 2</p>
         </div>
+    </div> -->
+    <div id="display">
+
     </div>
 </body>
 <script src="../tools/parseHtml.js"></script>
+<script src="../tools/parseCss.js"></script>
+<script src="../tools/render.js"></script>
 <script>
     var html = `<div class="container">
         <div class="newBFC pull-right">
@@ -25,7 +30,20 @@
         <div class="newBFC">
             <p>Sibling 2</p>
         </div>
-    </div>`
-console.log(parser(html));
+    </div>`;
+    let css = `
+    * {margin: 0; padding: 0;}
+    .container { background-color: red; width: 200px; overflow: hidden }
+    p { background-color: lightgreen; margin: 10px 0;}
+    .newBFC { overflow: hidden; } 
+    .pull-right{
+        float: right;
+    }`;
+    var display = document.getElementById("display");
+    var ast = parserHtml(html);
+    console.log(ast);
+    render(display,ast);
+    console.log(parseCss(css));
+// console.log();
 </script>
 </html>
