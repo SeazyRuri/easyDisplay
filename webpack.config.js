@@ -1,12 +1,22 @@
-const webpack = require("webpack");
-
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const glob = require('glob-all');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports={
     entry:{
-        
+        index:"./src/index.js",
+        "snippets/html":"./src/lib/ace/src-noconflict/snippets/html.js",
+        "snippets/css":"./src/lib/ace/src-noconflict/snippets/css.js",
     },
     output:{
-        fileName:"[name].js",
+        filename:"[name].js",
         path:path.resolve(__dirname,'dist/javascripts'),
+        publicPath:"../javascripts/",
     },
     // mode: 'production',
     mode:'development',
@@ -36,6 +46,7 @@ module.exports={
                 loader: 'babel-loader'
             },
             include: path.resolve(__dirname, "src"),
+            exclude: path.resolve(__dirname, "src/lib"),
         },
         {
             test: /\.vue$/,
@@ -44,6 +55,7 @@ module.exports={
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new VueLoaderPlugin(),
         new webpack.ProvidePlugin({
             'Vue': 'vue',

@@ -19,6 +19,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-minify": "^0.4.3",
     "bootstrap": "^4.1.1",
+    "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "glob": "^7.1.2",
@@ -39,6 +40,7 @@
   "dependencies": {
     "distpicker": "^2.0.4",
     "ejs-mate": "^2.3.0",
+    "file-loader": "^2.0.0",
     "jquery": "^3.3.1",
     "vue": "^2.5.17"
   }
