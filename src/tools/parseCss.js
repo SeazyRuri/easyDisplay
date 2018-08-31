@@ -4,19 +4,23 @@
             (global.parseCss = factory());
 }(this, (function () {
     const reCss = /\s*([^\{\}\n]+?)\s*\{[\s]*([\s\S]*?)[\s]*\}/;
-    // function parseCss(css) {
-    //     if (!reCss.test(css)) return null;
-    //     let res = css.match(reCss);
-    //     let selector = res[1];
-    //     let cssContent = res[2];
-    //     return {
-    //         selector: selector,
-    //         content: cssContent
-    //     }
-    // }
+    const reCommentStart = /\/\*/;
+    const reCommentEnd  = /\*\//;
     function parse(css) {
         let rest = css;
         let res = [];
+        //处理注释
+        while(reCommentStart.test(rest)){
+            let start = rest.match(reCommentStart).index;
+            let rest1;
+            if(reCommentEnd.test(rest)){
+                let end = rest.match(reCommentEnd).index;
+                rest1 = rest.slice(0,start)+rest.slice(end+3);
+            }else{
+                rest1 = rest.slice(0,start)
+            }
+            rest = rest1;
+        }  
         while (reCss.test(rest)) {
             let matches = rest.match(reCss);
             let selector = matches[1];

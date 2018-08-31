@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
         typeof define === 'function' && define.amd ? define(factory) :
-            (global.parserHtml = factory());
+            (global.parseHtml = factory());
 }(this, (function () {
 
 // 匹配key="abc"
@@ -20,7 +20,9 @@ const attr = `\\s*${attr1}|${attr2}|${attr3}|${attr4}`
 const reAttr = new RegExp(attr);
 const reStartTag = /<\s*([a-zA-Z]+)\s*([\s\S]*?)>/
 const reCloseTag = /<\/\s*([a-zA-Z]+)\s*>/
-const reTag = /([\s\S]*?)(<[\s\S]+?>)/
+const reTag = /([\s\S]*?)(<[^<>]+?>)/
+const reCommentStart = /<!--/;
+const reCommentEnd = /-->/;
 class astNode {
     constructor(nodeName) {
         this.nodeName = new String(nodeName).toLowerCase();
@@ -64,10 +66,22 @@ function parser(_html) {
     let html = new String(_html);
     let ast = new astNode("root").setParent(null);
     let tagStack = [];
-    let rest = html;
     let thisNode = ast;
+    let rest = html;
+    //处理注释
+    while(reCommentStart.test(rest)){
+        let start = rest.match(reCommentStart).index;
+        let rest1;
+        if(reCommentEnd.test(rest)){
+            let end = rest.match(reCommentEnd).index;
+            rest1 = rest.slice(0,start)+rest.slice(end+3);
+        }else{
+            rest1 = rest.slice(0,start)
+        }
+        rest = rest1;
+    }    
     while (rest.length >= 0) {
-        // console.log(rest);
+        //检测标签
         if (!reTag.test(rest)) {
             if (rest.replace(/\s*/, "").length > 0) {
                 thisNode.addText(rest);
