@@ -6,6 +6,7 @@
 function render(el,ast){
     let fragment = document.createDocumentFragment();
     genChildren(fragment,ast.children);
+    el.innerHTML="";
     el.appendChild(fragment);
 }
 function genChildren(el,children){

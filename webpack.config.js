@@ -10,8 +10,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports={
     entry:{
         index:"./src/index.js",
-        "snippets/html":"./src/lib/ace/src-noconflict/snippets/html.js",
-        "snippets/css":"./src/lib/ace/src-noconflict/snippets/css.js",
+        "../view/snippets/html":"./src/lib/ace/src-noconflict/snippets/html.js",
+        "../view/snippets/css":"./src/lib/ace/src-noconflict/snippets/css.js",
     },
     output:{
         filename:"[name].js",

@@ -94,7 +94,7 @@ function parser(_html) {
             // console.log(resTag);
             let matchLen = resTag[0].length + resTag.index;
             if (resTag[1].replace(/\s*/, "").length > 0) {
-                console.log(resTag[1]);
+                // console.log(resTag[1]);
                 thisNode.addText(resTag[1]);
             }
             if (reStartTag.test(resTag[2])) {
