@@ -54,6 +54,7 @@ const debounce = function(func,wait = 100){
 const renderPanel = document.getElementById("renderPanel");
 const responseHtml = debounce(function(){
     let html = htmlEditor.getValue();
+    localStorage.setItem("html",html);
     let ast = parseHtml(html);
     // console.log(ast);
     render(renderPanel,ast);
@@ -65,9 +66,18 @@ htmlEditor.on("change",function(){
 const styleNode = document.getElementById("css");
 const responseCss = debounce(function(){
     let css = cssEditor.getValue();
+    localStorage.setItem("css",css);
     styleNode.innerHTML = css;
     // styleNode.appendChild(document.createTextNode(css));
 })
 cssEditor.on("change",function(){
     responseCss();
-})
+});
+let localHtml = localStorage.getItem("html");
+if(localHtml){
+    htmlEditor.setValue(localHtml,1)
+}
+let localCss = localStorage.getItem("css");
+if(localCss){
+    cssEditor.setValue(localCss,1);
+}
