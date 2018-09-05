@@ -36,7 +36,7 @@ cssEditor.setOptions({
     enableLiveAutocompletion: true
 });
 cssEditor.gotoLine(2);
-const debounce = function(func,wait = 100){
+const debounce = function(func,wait = 300){
     let timer = 0;
     return function(immediate = false,...args){
         if(timer)clearInterval(timer);
