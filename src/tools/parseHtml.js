@@ -24,6 +24,7 @@
     const reTag = /([\s\S]*?)(<[^<>]+?>)/
     const reCommentStart = /<!--/;
     const reCommentEnd = /-->/;
+    const emptyElt=['area','base','br','col','clogroup','command','embed','hr','img','input','keygen','link','meta','param','source','track','wbr']
     class astNode {
         constructor(nodeName) {
             this.nodeName = new String(nodeName).toLowerCase();
@@ -104,9 +105,19 @@
                 } else if (reStartTag.test(resTag[2])) {
                     let cnode = parseStartTag(resTag[2]);
                     // cnode.setParent(thisNode);
-                    tagStack.push(cnode.nodeName);
-                    thisNode.addChild(cnode);
-                    thisNode = cnode;
+                    //避免空標簽
+                    let emptyEltIndex = emptyElt.findIndex(function(e){
+                        return cnode.nodeName==e;
+                    });
+                    // console.log(cnode.nodeName + " " +emptyEltIndex)
+                    if(emptyEltIndex<0){
+                        tagStack.push(cnode.nodeName);
+                        thisNode.addChild(cnode);
+                        thisNode = cnode;
+                    }else {
+                        thisNode.addChild(cnode); 
+                    }
+                    
                 } else if (reCloseTag.test(resTag[2])) {
                     let nodeName = parseCloseTag(resTag[2]);
                     if (nodeName == tagStack[tagStack.length - 1]) {
