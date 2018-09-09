@@ -6,7 +6,8 @@ import "./lib/ace/src-noconflict/mode-css";
 import "./lib/ace/webpack-resolver";
 import "./lib/ace/src-noconflict/ext-language_tools"
 const parseHtml = require("./tools/parseHtml");
-// const parseCss = require("./tools/parseCss");
+const parseCss = require("./tools/parseCss");
+const genCss=require("./tools/genCss");
 const render = require("./tools/render");
 // import "./lib/ace/src-noconflict/theme-ambiance"
 ace.require("ace/ext/language_tools");
@@ -56,7 +57,6 @@ const responseHtml = debounce(function(){
     let html = htmlEditor.getValue();
     localStorage.setItem("html",html);
     let ast = parseHtml(html);
-    // console.log(ast);
     render(renderPanel,ast);
 });
 htmlEditor.on("change",function(){
@@ -67,8 +67,9 @@ const styleNode = document.getElementById("css");
 const responseCss = debounce(function(){
     let css = cssEditor.getValue();
     localStorage.setItem("css",css);
-    styleNode.innerHTML = css;
-    // styleNode.appendChild(document.createTextNode(css));
+    let cssTree = parseCss(css);
+    let cssText = genCss(cssTree);
+    styleNode.innerHTML = cssText;
 })
 cssEditor.on("change",function(){
     responseCss();

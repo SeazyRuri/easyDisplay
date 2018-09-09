@@ -109,7 +109,6 @@
                     let emptyEltIndex = emptyElt.findIndex(function(e){
                         return cnode.nodeName==e;
                     });
-                    // console.log(cnode.nodeName + " " +emptyEltIndex)
                     if(emptyEltIndex<0){
                         tagStack.push(cnode.nodeName);
                         thisNode.addChild(cnode);

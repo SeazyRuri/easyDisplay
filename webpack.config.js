@@ -7,19 +7,20 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob-all');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-module.exports={
-    entry:{
-        index:"./src/index.js",
-        "../view/snippets/html":"./src/lib/ace/src-noconflict/snippets/html.js",
-        "../view/snippets/css":"./src/lib/ace/src-noconflict/snippets/css.js",
+const mark = require("./src/tools/genMark")();
+module.exports = {
+    entry: {
+        index: "./src/index.js",
+        "../view/snippets/html": "./src/lib/ace/src-noconflict/snippets/html.js",
+        "../view/snippets/css": "./src/lib/ace/src-noconflict/snippets/css.js",
     },
-    output:{
-        filename:"[name].js",
-        path:path.resolve(__dirname,'dist/javascripts'),
-        publicPath:"../javascripts/",
+    output: {
+        filename: "[name].js",
+        path: path.resolve(__dirname, 'dist/javascripts'),
+        publicPath: "../javascripts/",
     },
     // mode: 'production',
-    mode:'development',
+    mode: 'development',
     devtool: '#source-map',
     resolve: {
         alias: {
@@ -28,7 +29,18 @@ module.exports={
         }
     },
     module: {
-        rules: [{
+        rules: [
+            {
+            test: /\.html$/,
+            use: {
+                loader: path.resolve(__dirname, './src/tools/loader/html.js'),
+                options: {
+                    hash: mark
+                }
+                // loader:'html-loader',
+            }
+        },
+        {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 fallback: "style-loader",
@@ -36,6 +48,11 @@ module.exports={
                     loader: "css-loader",
                     options: {
                         minimize: true
+                    }
+                }, {
+                    loader: path.resolve(__dirname, './src/tools/loader/css.js'),
+                    options: {
+                        hash: mark
                     }
                 }]
             })
@@ -46,7 +63,8 @@ module.exports={
                 loader: 'babel-loader'
             },
             include: path.resolve(__dirname, "src"),
-            exclude: path.resolve(__dirname, "src/lib"),
+            exclude: [path.resolve(__dirname, "src/lib"),path.resolve(__dirname, "src/tools/loader")],
+            
         },
         {
             test: /\.vue$/,
